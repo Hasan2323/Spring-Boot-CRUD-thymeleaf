@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Add new Product</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Add new Product</h1>
+
+        <form th:action="@{/add}" th:object="${productEntity}" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" th:field="*{name}" class="form-control" placeholder="Enter product name">
+            </div>
+            <div class="form-group">
+                <label for="brand">Brand</label>
+                <input type="text" th:field="*{brand}" class="form-control" placeholder="Enter brand">
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="text" th:field="*{price}" class="form-control" placeholder="Enter product price">
+            </div>
+            <div class="form-group">
+                <label for="madeIn">Made In</label>
+                <input type="text" th:field="*{madeIn}" class="form-control" placeholder="Enter Made in">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add</button>
+            <a href="/" class="btn btn-info">Cancel</a><br>
+        </form>
+    </div>
+
+</body>
+</html>

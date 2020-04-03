@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Product Manager</title>
+</head>
+<body>
+
+    <div class="container">
+        <h1 align="center"><b>Product List</b></h1>
+        <hr>
+        <a href="new" class="btn btn-info">Add new Product</a><br>
+        <hr>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Brand</th>
+                    <th>Price</th>
+                    <th>Made In</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product:${products}">
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.brand}"></td>
+                    <td th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></td>
+                    <td th:text="${product.madeIn}"></td>
+                    <td>
+                        <a th:href="@{'/edit/'+${product.id}}" class="btn btn-success">Edit</a>
+                        <a th:href="@{'/delete/'+${product.id}}" class="btn btn-danger" onclick='return confirm_delete()'>Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function confirm_delete(){
+            return confirm("Are you sure you want to permanently delete this data?");
+        }
+    </script>
+</body>
+</html>
