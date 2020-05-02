@@ -1,5 +1,6 @@
 package com.saimon.entity;
 
+import com.saimon.validator.EmailList;
 import lombok.*;
 
 import javax.persistence.Entity;
@@ -24,9 +25,12 @@ public class ProductEntity {
     private String name;
 
     @NotNull
-    private String brand;
+    @EmailList(message = "Provide a valid mail")
+    private String email;
 
     @NotNull
+    private String brand;
+
     private String madeIn;
 
     @NotNull

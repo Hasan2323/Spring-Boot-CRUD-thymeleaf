@@ -18,6 +18,7 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Email</th>
                     <th>Brand</th>
                     <th>Price</th>
                     <th>Made In</th>
@@ -28,6 +29,7 @@
                 <tr th:each="product:${products}">
                     <td th:text="${product.id}"></td>
                     <td th:text="${product.name}"></td>
+                    <td th:text="${product.email}"></td>
                     <td th:text="${product.brand}"></td>
                     <td th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></td>
                     <td th:text="${product.madeIn}"></td>
