@@ -12,13 +12,15 @@ public class DatabaseErrorHandler {
 
 //    @ExceptionHandler(DataAccessException.class)
 //    public String handleDatabaseException(Model model, DataAccessException exception) {
-//        model.addAttribute("error", exception);
+//        model.addAttribute("error", exception.getMessage());
 //        return "error";
 //    }
 
     @ExceptionHandler(Exception.class)
     public String handleDatabaseException(Model model, Exception exception) {
-        model.addAttribute("error", exception);
+        model.addAttribute("errorWithClass", exception);
+        model.addAttribute("error", exception.getMessage());
+        model.addAttribute("errorClass", exception.getClass());
         return "error";
     }
 
