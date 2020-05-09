@@ -3,6 +3,7 @@ package com.saimon.controller;
 import com.saimon.entity.ProductEntity;
 import com.saimon.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,21 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    /*
+    the below method for Error/Exception handling // tutorial a eta chilo.
+    This can also be written in individual CLASS. check DatabaseErrorHandler class within this package.
+     */
+//    @ExceptionHandler(DataAccessException.class)
+//    public String handleDatabaseException(Model model, DataAccessException exception) {
+//        model.addAttribute("error", exception);
+//        return "error";
+//    }
+//    @ExceptionHandler(Exception.class)
+//    public String handleDatabaseException(Model model, Exception exception) {
+//        model.addAttribute("error", exception);
+//        return "error";
+//    }
 
     @RequestMapping("/")
     public String viewHomePage(Model model){
