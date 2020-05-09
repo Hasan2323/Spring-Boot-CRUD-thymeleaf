@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 public class EmailListValidator implements ConstraintValidator<EmailList, String> {
 
     final private Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$");
-    private boolean result=true;
     //private int min;
 
     @Override
@@ -29,6 +28,7 @@ public class EmailListValidator implements ConstraintValidator<EmailList, String
             return false;
         }
         String[] emailList = email.split(",");
+        boolean result = true;
         for (String mail:emailList) {
             Matcher matcher = emailPattern.matcher(mail.trim());
             if (!matcher.matches()){
