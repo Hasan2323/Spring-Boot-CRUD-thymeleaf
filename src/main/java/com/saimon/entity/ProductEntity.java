@@ -3,38 +3,38 @@ package com.saimon.entity;
 import com.saimon.validator.EmailList;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
-@Entity(name = "product_info")
+@ToString
+@Builder
+@Entity
+@Table(name = "product_info")
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
-    @NotNull
-    @EmailList(message = "Provide a valid mail")
-    private String email;
+//    @NotBlank
+//    @EmailList(message = "Provide a valid mail")
+//    private String email;
 
-    @NotNull
+    @NotBlank
     private String brand;
 
     private String madeIn;
 
     @NotNull
-    private float price;
+    private double price;
 
 
 }

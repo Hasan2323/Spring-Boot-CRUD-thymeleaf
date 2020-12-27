@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Edit Product</title>
 </head>
 <body>
@@ -16,32 +17,32 @@
 <!--        jekono ek line dilei hoi -->
         <div class="form-group">
             <label for="id">Product Id</label>
-            <input type="text" th:field="*{id}" readonly class="form-control">
+            <input type="text" id="id" th:field="*{id}" readonly class="form-control">
         </div>
 
         <div class="form-group">
             <label for="name">Name</label>
-            <input type="text" th:field="*{name}" class="form-control">
+            <input type="text" id="name" th:field="*{name}" class="form-control">
         </div>
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" th:field="*{email}" class="form-control" required>
-        </div>
+<!--        <div class="form-group">-->
+<!--            <label for="email">Email</label>-->
+<!--            <input type="text" id="email" th:field="*{email}" class="form-control" required>-->
+<!--        </div>-->
         <div class="form-group">
             <label for="brand">Brand</label>
-            <input type="text" th:field="*{brand}" class="form-control">
+            <input type="text" id="brand" th:field="*{brand}" class="form-control">
         </div>
         <div class="form-group">
             <label for="price">Price</label>
-            <input type="text" th:field="*{price}" class="form-control">
+            <input type="text" id="price" th:field="*{price}" class="form-control">
         </div>
         <div class="form-group">
             <label for="madeIn">Made In</label>
-            <input type="text" th:field="*{madeIn}" class="form-control">
+            <input type="text" id="madeIn" th:field="*{madeIn}" class="form-control">
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>
-        <a href="/" class="btn btn-info">Cancel</a><br>
+        <a th:href="@{/}" class="btn btn-info">Cancel</a><br>
     </form>
 </div>
 

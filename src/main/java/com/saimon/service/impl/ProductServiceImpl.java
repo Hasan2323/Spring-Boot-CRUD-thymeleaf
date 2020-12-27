@@ -1,4 +1,4 @@
-package com.saimon.impl;
+package com.saimon.service.impl;
 
 import com.saimon.entity.ProductEntity;
 import com.saimon.repository.ProductRepository;

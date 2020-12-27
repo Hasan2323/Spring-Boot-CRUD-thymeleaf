@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Product Manager</title>
 </head>
 <body>
@@ -16,9 +17,10 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>SL</th>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
+<!--                    <th>Email</th>-->
                     <th>Brand</th>
                     <th>Price</th>
                     <th>Made In</th>
@@ -26,10 +28,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="product:${products}">
+                <tr th:each="product, index:${products}">
+                    <td th:text="${index.count}"></td>
                     <td th:text="${product.id}"></td>
                     <td th:text="${product.name}"></td>
-                    <td th:text="${product.email}"></td>
+<!--                    <td th:text="${product.email}"></td>-->
                     <td th:text="${product.brand}"></td>
                     <td th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></td>
                     <td th:text="${product.madeIn}"></td>

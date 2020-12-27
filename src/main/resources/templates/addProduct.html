@@ -14,27 +14,27 @@
         <form th:action="@{/add}" th:object="${productEntity}" method="post">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" th:field="*{name}" class="form-control" placeholder="Enter product name">
+                <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Enter product name">
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" th:field="*{email}" class="form-control" placeholder="Enter email" required>
-            </div>
+<!--            <div class="form-group">-->
+<!--                <label for="email">Email</label>-->
+<!--                <input type="text" id="email" th:field="*{email}" class="form-control" placeholder="Enter email" required>-->
+<!--            </div>-->
             <div class="form-group">
                 <label for="brand">Brand</label>
-                <input type="text" th:field="*{brand}" class="form-control" placeholder="Enter brand">
+                <input type="text" id="brand" th:field="*{brand}" class="form-control" placeholder="Enter brand">
             </div>
             <div class="form-group">
                 <label for="price">Price</label>
-                <input type="text" th:field="*{price}" class="form-control" placeholder="Enter product price">
+                <input type="text" id="price" th:field="*{price}" class="form-control" placeholder="Enter product price">
             </div>
             <div class="form-group">
                 <label for="madeIn">Made In</label>
-                <input type="text" th:field="*{madeIn}" class="form-control" placeholder="Enter Made in">
+                <input type="text" id="madeIn" th:field="*{madeIn}" class="form-control" placeholder="Enter Made in">
             </div>
 
             <button type="submit" class="btn btn-primary">Add</button>
-            <a href="/" class="btn btn-info">Cancel</a><br>
+            <a th:href="@{/}" class="btn btn-info">Cancel</a><br>
         </form>
     </div>
 
