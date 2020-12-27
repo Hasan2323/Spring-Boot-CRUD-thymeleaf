@@ -1,21 +1,36 @@
 package com.saimon.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.saimon.entity.ProductEntity;
 import com.saimon.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    private int count = 0;
+    private Object jsonData;
 
     /*
     the below method for Error/Exception handling // tutorial a eta chilo.
@@ -67,10 +82,24 @@ public class ProductController {
     }
 
     @RequestMapping("/edit/{id}")
-    public String getProductByIdForUpdate(@PathVariable Long id,Model model){
+    @ResponseBody
+    public Object getProductByIdForUpdate(@PathVariable Long id,Model model) throws IOException {
         ProductEntity productEntity = productService.getProductById(id);
-        model.addAttribute(productEntity);
-        return "editProduct";
+
+        Gson json = new GsonBuilder().setPrettyPrinting().create();
+
+        // Java object to JSON String.
+        String jsonData = json.toJson(productEntity);
+
+        // Java object to JSON file. Unfortunately its not working
+        FileWriter writer = new FileWriter("/home/saimon/workspace/product.json");
+        json.toJson(productEntity, writer);
+
+        System.out.println(jsonData);
+        return jsonData;
+
+        //model.addAttribute(productEntity);
+        //return "editProduct";
     }//or
 
 //    @RequestMapping("/edit/{id}")
@@ -80,5 +109,57 @@ public class ProductController {
 //        mav.addObject("productEntity", productEntity);
 //        return mav;
 //    }
+
+    @RequestMapping("/json")
+    //@ResponseBody
+    public void jsonData() throws IOException {
+        //File file = new File("/home/saimon/workspace/saimon-project/ProductManager/bookDetails.json");
+        ObjectMapper mapper = new ObjectMapper();
+//        TypeReference<List<Object>> typeReference = new TypeReference<>() {
+//        };
+//        InputStream inputStream = TypeReference.class.getResourceAsStream("/json/bookDetails.json");
+//        Object jsonData = mapper.readValue(inputStream, typeReference);
+
+        //for saving to db
+//        try {
+//            List<User> users = mapper.readValue(inputStream,typeReference);
+//            userService.save(users);
+//            System.out.println("Users Saved!");
+//        } catch (IOException e){
+//            System.out.println("Unable to save users: " + e.getMessage());
+//        }
+
+        try {
+            String jsonStr = Files.lines(Paths.get("/home/saimon/workspace/saimon-project/ProductManager/src/main/resources/json/bookDetails.json")).collect(Collectors.joining(System.lineSeparator()));
+            JsonNode jsonNode = mapper.readTree(jsonStr);
+            if (jsonNode.isObject()) {
+                jsonNode.fields().forEachRemaining(entry -> {
+                    String fieldName = entry.getKey();
+                    JsonNode nestedNode = entry.getValue();
+                    System.out.println(fieldName);
+                    System.out.println(nestedNode);
+                });
+            } else if (jsonNode.isArray()) {
+                jsonNode.elements().forEachRemaining(subElem -> {
+                    int price = subElem.get("price").asInt();
+                    //System.out.println("Name : " + name);
+                    cal(price);
+
+                });
+            } else {
+                String value = jsonNode.asText();
+                System.out.println(value);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void cal(int price) {
+        count += price;
+    }
 
 }
