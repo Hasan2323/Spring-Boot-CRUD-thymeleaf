@@ -12,26 +12,26 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
-    private ProductRepository prodRepo;
+    private ProductRepository productRepository;
 
     @Override
     public List<ProductEntity> getAllProducts() {
-        return prodRepo.findAll();
+        return productRepository.findAll();
     }
 
     @Override
-    public void create(ProductEntity productEntity) {
-        prodRepo.save(productEntity);
+    public void createProduct(ProductEntity productEntity) {
+        productRepository.save(productEntity);
     }
 
     @Override
     public ProductEntity getProductById(Long id) {
-        return prodRepo.findById(id).get();
+        return productRepository.findById(id).get();
         //return prodRepo.findById(id); //erokom dite chaile returnType Optional<ProductEntity> korte hobe.
     }
 
     @Override
-    public void delete(Long id) {
-        prodRepo.deleteById(id);
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 }
