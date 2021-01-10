@@ -12,7 +12,9 @@
     <div class="container">
         <h1 style="text-align: center; padding-top: 20px;"><b>Product List</b></h1>
         <hr>
-        <a th:href="@{/new}" class="btn btn-info">Add new Product</a><br>
+        <a th:href="@{/new}" class="btn btn-info">Add new Product</a>
+        <a th:href="@{/products/export}" class="btn btn-success">Export to CSV</a>
+        <br>
         <hr>
         <table class="table table-striped">
             <thead>
