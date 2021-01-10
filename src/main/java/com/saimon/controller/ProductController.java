@@ -4,15 +4,20 @@ import com.saimon.entity.ProductEntity;
 import com.saimon.service.CSVService;
 import com.saimon.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.supercsv.io.CsvBeanWriter;
-import org.supercsv.io.ICsvBeanWriter;
-import org.supercsv.prefs.CsvPreference;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -104,7 +109,7 @@ public class ProductController {
     }
 
     @RequestMapping(value = "/products/opencsv", produces = "text/csv")
-    public void findCities(HttpServletResponse response) {
+    public void exportToCSVUsingOpenCSV(HttpServletResponse response) {
 
         DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HHmmss");
         String currentDateTime = dateFormatter.format(new Date());
@@ -114,6 +119,27 @@ public class ProductController {
         String[] columns = new String[]{"id", "name", "brand", "madeIn", "price"};
 
         csvService.generateCSVByOpenCSV(response, products, columns, fileName);
+    }
+
+    // https://bezkoder.com/spring-boot-download-csv-file/
+    @GetMapping("/products/apachecommoncsv")
+    public ResponseEntity<Resource> exportToCSVUsingApacheCommonCSV() {
+
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HHmmss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String filename = "Products_using_Apache_common_" + currentDateTime + ".csv";
+
+        List<ProductEntity> products = productService.getAllProducts();
+        String[] csvHeader = {"Product ID", "Name", "Brand", "Made in", "Price"};
+
+        ByteArrayInputStream in = csvService.generateCSVByApacheCommonCSV(products, csvHeader);
+
+        InputStreamResource file = new InputStreamResource(in);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/csv"))
+                .body(file);
     }
 
 }

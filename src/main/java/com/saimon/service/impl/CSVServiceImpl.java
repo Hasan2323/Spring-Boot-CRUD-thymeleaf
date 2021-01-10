@@ -8,15 +8,21 @@ import com.opencsv.exceptions.CsvException;
 import com.saimon.entity.ProductEntity;
 import com.saimon.service.CSVService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.QuoteMode;
 import org.springframework.stereotype.Service;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author Muhammad Saimon
@@ -82,6 +88,32 @@ public class CSVServiceImpl implements CSVService {
         } catch (CsvException | IOException ex) {
             log.error("Error mapping Bean to CSV", ex);
             return false;
+        }
+    }
+
+    @Override
+    public ByteArrayInputStream generateCSVByApacheCommonCSV(List<ProductEntity> productEntities, String[] csvHeader) {
+//        final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL);
+        final CSVFormat format = CSVFormat.DEFAULT.withHeader(csvHeader);
+
+        try {
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);
+            for (ProductEntity productEntity : productEntities) {
+                List<String> data = Arrays.asList(
+                        String.valueOf(productEntity.getId()),
+                        productEntity.getName(),
+                        productEntity.getBrand(),
+                        productEntity.getMadeIn(),
+                        String.valueOf(productEntity.getPrice())
+                );
+                csvPrinter.printRecord(data);
+            }
+
+            csvPrinter.flush();
+            return new ByteArrayInputStream(out.toByteArray());
+        } catch (IOException e) {
+            throw new RuntimeException("fail to import data to CSV file: " + e.getMessage());
         }
     }
 }
