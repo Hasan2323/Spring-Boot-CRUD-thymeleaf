@@ -143,4 +143,20 @@ public class ProductController {
                 .body(file);
     }
 
+    // https://grokonez.com/spring-framework/spring-boot/csv-file-upload-download-using-apache-commons-csv-springboot-restapis-spring-jpa-thymeleaf-to-mysql
+    // https://grokonez.com/spring-framework/spring-boot/download-csv-file-from-springboot-restapi-mysql-using-apache-commons-csv-spring-jpa
+    @GetMapping("/products/apachecommoncsv/two")
+    public void exportToCSVUsingApacheCommonCSVTwo(HttpServletResponse response) {
+
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HHmmss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String filename = "Products_using_Apache_common_Two_" + currentDateTime + ".csv";
+
+        List<ProductEntity> products = productService.getAllProducts();
+        String[] csvHeader = {"Product ID", "Name", "Brand", "Made in", "Price"};
+
+        csvService.generateCSVByApacheCommonCSVTwo(response, products, csvHeader, filename);
+
+    }
+
 }

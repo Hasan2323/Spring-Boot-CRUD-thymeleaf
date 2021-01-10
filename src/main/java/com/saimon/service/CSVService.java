@@ -19,4 +19,6 @@ public interface CSVService {
 
     ByteArrayInputStream generateCSVByApacheCommonCSV(List<ProductEntity> productEntities, String[] csvHeader);
 
+    void generateCSVByApacheCommonCSVTwo(HttpServletResponse response, List<ProductEntity> productEntities, String[] csvHeader, String fileName);
+
 }

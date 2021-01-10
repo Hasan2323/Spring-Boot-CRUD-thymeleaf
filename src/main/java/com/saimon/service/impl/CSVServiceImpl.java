@@ -128,4 +128,37 @@ public class CSVServiceImpl implements CSVService {
             throw new RuntimeException("fail to import data to CSV file: " + e.getMessage());
         }
     }
+
+    @Override
+    public void generateCSVByApacheCommonCSVTwo(HttpServletResponse response, List<ProductEntity> productEntities,
+                                                String[] csvHeader, String fileName) {
+
+        response.setContentType("text/csv");
+
+//        String headerKey = "Content-Disposition";
+//        String headerValue = "attachment; filename=" + fileName;
+//        response.setHeader(headerKey, headerValue);
+        // OR
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+
+        try (
+                CSVPrinter csvPrinter = new CSVPrinter(response.getWriter(), CSVFormat.DEFAULT.withHeader(csvHeader));
+        ) {
+            for (ProductEntity productEntity : productEntities) {
+                List<String> data = Arrays.asList(
+                        String.valueOf(productEntity.getId()),
+                        productEntity.getName(),
+                        productEntity.getBrand(),
+                        productEntity.getMadeIn(),
+                        String.valueOf(productEntity.getPrice())
+                );
+
+                csvPrinter.printRecord(data);
+            }
+            csvPrinter.flush();
+        } catch (Exception e) {
+            log.error("Writing CSV error!");
+            e.printStackTrace();
+        }
+    }
 }
