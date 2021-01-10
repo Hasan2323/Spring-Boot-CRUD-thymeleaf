@@ -103,4 +103,17 @@ public class ProductController {
 
     }
 
+    @RequestMapping(value = "/products/opencsv", produces = "text/csv")
+    public void findCities(HttpServletResponse response) {
+
+        DateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy_HHmmss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String fileName = "Products_" + currentDateTime + ".csv";
+
+        List<ProductEntity> products = productService.getAllProducts();
+        String[] columns = new String[]{"id", "name", "brand", "madeIn", "price"};
+
+        csvService.generateCSVByOpenCSV(response, products, columns, fileName);
+    }
+
 }

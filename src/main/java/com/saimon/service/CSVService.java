@@ -3,6 +3,7 @@ package com.saimon.service;
 import com.saimon.entity.ProductEntity;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 import java.util.List;
 
 /**
@@ -12,6 +13,8 @@ import java.util.List;
 
 public interface CSVService {
 
-    boolean generateCSV(HttpServletResponse response, List<ProductEntity> productEntity, String fileName, String[] csvHeader, String[] nameMapping);
+    boolean generateCSV(HttpServletResponse response, List<ProductEntity> productEntities, String fileName, String[] csvHeader, String[] nameMapping);
+
+    boolean generateCSVByOpenCSV(HttpServletResponse response, List<ProductEntity> productEntities, String[] columns, String fileName);
 
 }
