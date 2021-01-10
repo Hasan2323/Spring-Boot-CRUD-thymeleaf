@@ -4,6 +4,7 @@ import com.saimon.entity.ProductEntity;
 import com.saimon.repository.ProductRepository;
 import com.saimon.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductEntity> getAllProducts() {
-        return productRepository.findAll();
+        return productRepository.findAll(Sort.by("id").descending());
     }
 
     @Override
