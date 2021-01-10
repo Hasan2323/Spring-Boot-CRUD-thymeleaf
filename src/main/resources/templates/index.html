@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,6 +10,13 @@
 <body>
 
     <div class="container">
+
+        <p th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]</p>
+
+        <form th:action="@{/logout}" method="post">
+            <button>Logout</button>
+        </form>
+
         <h1 style="text-align: center; padding-top: 20px;"><b>Product List</b></h1>
         <hr>
         <a th:href="@{/new}" class="btn btn-info">Add new Product</a><br>
@@ -24,7 +31,7 @@
                     <th>Brand</th>
                     <th>Price</th>
                     <th>Made In</th>
-                    <th>Actions</th>
+                    <th sec:authorize="hasRole('ADMIN')">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,7 +43,7 @@
                     <td th:text="${product.brand}"></td>
                     <td th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></td>
                     <td th:text="${product.madeIn}"></td>
-                    <td>
+                    <td sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{'/edit/'+${product.id}}" class="btn btn-success">Edit</a>
                         <a th:href="@{'/delete/'+${product.id}}" class="btn btn-danger" onclick='return confirm_delete()'>Delete</a>
                     </td>
