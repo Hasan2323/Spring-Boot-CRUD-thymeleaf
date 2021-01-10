@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
@@ -61,28 +62,38 @@ public class CSVServiceImpl implements CSVService {
     }
 
     @Override
-    public boolean generateCSVByOpenCSV(HttpServletResponse response, List<ProductEntity> productEntities, String[] columns, String fileName) {
+    public boolean generateCSVByOpenCSV(HttpServletResponse response, List<ProductEntity> productEntities,
+                                        String[] csvHeader, String[] columns, String fileName) {
 
         response.setContentType("text/csv");
 
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=" + fileName;
-        response.setHeader(headerKey, headerValue);
+//        String headerKey = "Content-Disposition";
+//        String headerValue = "attachment; filename=" + fileName;
+//        response.setHeader(headerKey, headerValue);
+        // OR
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
 
-        try {
-
+        try (
+                CSVWriter csvWriter = new CSVWriter(response.getWriter(),
+                        CSVWriter.DEFAULT_SEPARATOR,
+                        CSVWriter.NO_QUOTE_CHARACTER,
+                        CSVWriter.DEFAULT_ESCAPE_CHARACTER,
+                        CSVWriter.DEFAULT_LINE_END);
+        ) {
+            csvWriter.writeNext(csvHeader);
             ColumnPositionMappingStrategy<ProductEntity> mapStrategy = new ColumnPositionMappingStrategy<>();
 
             mapStrategy.setType(ProductEntity.class);
             mapStrategy.setColumnMapping(columns);
 
-            StatefulBeanToCsv<ProductEntity> btcsv = new StatefulBeanToCsvBuilder<ProductEntity>(response.getWriter())
+            StatefulBeanToCsv<ProductEntity> writer = new StatefulBeanToCsvBuilder<ProductEntity>(response.getWriter())
                     .withQuotechar(CSVWriter.NO_QUOTE_CHARACTER)
                     .withMappingStrategy(mapStrategy)
-                    .withSeparator(',')
+                    .withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+//                    .withOrderedResults(false) // optional
                     .build();
 
-            btcsv.write(productEntities);
+            writer.write(productEntities);
             log.info("Successfully generate CSV file by Open CSV");
             return true;
         } catch (CsvException | IOException ex) {
@@ -96,9 +107,10 @@ public class CSVServiceImpl implements CSVService {
 //        final CSVFormat format = CSVFormat.DEFAULT.withQuoteMode(QuoteMode.MINIMAL);
         final CSVFormat format = CSVFormat.DEFAULT.withHeader(csvHeader);
 
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);
+        try (
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                CSVPrinter csvPrinter = new CSVPrinter(new PrintWriter(out), format);
+        ) {
             for (ProductEntity productEntity : productEntities) {
                 List<String> data = Arrays.asList(
                         String.valueOf(productEntity.getId()),

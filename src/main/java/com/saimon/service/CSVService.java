@@ -15,7 +15,7 @@ public interface CSVService {
 
     boolean generateCSV(HttpServletResponse response, List<ProductEntity> productEntities, String fileName, String[] csvHeader, String[] nameMapping);
 
-    boolean generateCSVByOpenCSV(HttpServletResponse response, List<ProductEntity> productEntities, String[] columns, String fileName);
+    boolean generateCSVByOpenCSV(HttpServletResponse response, List<ProductEntity> productEntities, String[] csvHeader, String[] columns, String fileName);
 
     ByteArrayInputStream generateCSVByApacheCommonCSV(List<ProductEntity> productEntities, String[] csvHeader);
 

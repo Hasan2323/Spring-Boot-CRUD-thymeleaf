@@ -116,9 +116,10 @@ public class ProductController {
         String fileName = "Products_" + currentDateTime + ".csv";
 
         List<ProductEntity> products = productService.getAllProducts();
+        String[] csvHeader = {"Pro ID", "Name", "Brand", "Made In", "Price"};
         String[] columns = new String[]{"id", "name", "brand", "madeIn", "price"};
 
-        csvService.generateCSVByOpenCSV(response, products, columns, fileName);
+        csvService.generateCSVByOpenCSV(response, products, csvHeader, columns, fileName);
     }
 
     // https://bezkoder.com/spring-boot-download-csv-file/
