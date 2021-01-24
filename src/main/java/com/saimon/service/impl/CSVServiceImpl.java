@@ -35,7 +35,8 @@ import java.util.stream.Collectors;
 public class CSVServiceImpl implements CSVService {
 
     @Override
-    public boolean generateCSV(HttpServletResponse response, List<ProductEntity> productEntities, String fileName, String[] csvHeader, String[] nameMapping) {
+    public boolean generateCSV(HttpServletResponse response, List<ProductEntity> productEntities, String fileName,
+                               String[] csvHeader, String[] nameMapping) {
         response.setContentType("text/csv");
 //        response.setContentType("application/csv");
 
@@ -74,6 +75,7 @@ public class CSVServiceImpl implements CSVService {
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
 
         try (
+                //CSVWriter csvWriter = new CSVWriter(new FileWriter(fullPath), or
                 CSVWriter csvWriter = new CSVWriter(response.getWriter(),
                         CSVWriter.DEFAULT_SEPARATOR,
                         CSVWriter.NO_QUOTE_CHARACTER,
@@ -97,7 +99,7 @@ public class CSVServiceImpl implements CSVService {
             log.info("Successfully generate CSV file by Open CSV");
             return true;
         } catch (CsvException | IOException ex) {
-            log.error("Error mapping Bean to CSV", ex);
+            log.error("CSV file generation error {}", ex.getMessage(), ex);
             return false;
         }
     }
@@ -124,8 +126,9 @@ public class CSVServiceImpl implements CSVService {
 
             csvPrinter.flush();
             return new ByteArrayInputStream(out.toByteArray());
-        } catch (IOException e) {
-            throw new RuntimeException("fail to import data to CSV file: " + e.getMessage());
+        } catch (IOException ex) {
+            throw new RuntimeException("fail to import data to CSV file: " + ex.getMessage());
+//            log.error("CSV file generation error {}", ex.getMessage(), ex);
         }
     }
 
@@ -157,8 +160,7 @@ public class CSVServiceImpl implements CSVService {
             }
             csvPrinter.flush();
         } catch (Exception e) {
-            log.error("Writing CSV error!");
-            e.printStackTrace();
+            log.error("CSV file generation error {}", e.getMessage(), e);
         }
     }
 }
