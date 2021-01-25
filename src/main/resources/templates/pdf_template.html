@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style type="text/css">
+        body {
+            padding: 30px 0;
+            margin: 0;
+            font-size: 14px;
+            font-family: arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            height: 50px;
+        }
+
+        table, th, tr, td {
+            border: 2px solid black;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        td {
+            font-size: 13px;
+        }
+
+        p {
+            text-align: left;
+            line-height: 22px;
+            padding-bottom: 5px;
+            margin: 0;
+        }
+
+        .mt-40 {
+            margin-top: 40px !important;
+        }
+
+        .mt-10 {
+            margin-top: 10px !important;
+        }
+
+        .mt-20 {
+            margin-top: 20px !important;
+        }
+
+        .block {
+            display: block;
+        }
+
+        .bank-info {
+            margin-top: 20px;
+        }
+
+        .container {
+            padding: 30px 15px;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .application-body {
+            margin-top: 15px;
+        }
+
+        .application-body p span {
+            margin-bottom: 15px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container" th:object="${productEntity}">
+
+    <p><span th:text="${currentDate}"></span></p>
+
+    <div class="bank-info">
+        <p>
+            <span class="block"> <b>The Manager</b></span>
+            <span class="block" th:text="${bankName}"></span>
+            <span class="block" th:text="*{brand}"> Branch</span>
+            <span class="block" th:each="address: ${branchAddress}" th:text="${address}"></span>
+        </p>
+    </div>
+
+    <div class="mt-10">
+        <p><b>Subject: Transfer of fund from A/C number <span th:text="*{name}"></span></b></p>
+    </div>
+    <div class="application-body">
+        <p>
+            <span class="block">Dear Manager,</span>
+            <span class="block">Please execute the following fund transfer through as per following information:</span>
+        </p>
+
+        <span class="block">
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>SL</th>
+                        <th>Ref No.</th>
+                        <th>A/C Name</th>
+                        <th>From A/C No</th>
+                        <th>Bank & Branch Name</th>
+                        <th style="text-align: right;">Amount(BDT)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Principle Amount</td>
+                        <td>BKASH LIMITED</td>
+                        <td th:text="*{name}">0061-0320000410</td>
+                        <td th:text="${bankName} + ',' + *{brand}">Jamuna Bank Limited,Ring Road</td>
+                        <td th:text="${grandTotal}" style="text-align: right;">Amount</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </span>
+
+        <p>
+            <span class="block mt-20">In this regard, you are authorised to debit our <b>Account No: <span th:text="*{name}"></span></b>
+                for <b> BDT <span th:text="${grandTotal}"></span> (<span th:text="${grandTotalWord}"></span>)</b> with your bank by the value of the transaction.</span>
+
+            <span class="block mt-40">Thanking you</span>
+            <span class="block ">Yours sincerely</span>
+        </p>
+    </div>
+</div>
+</body>
+</html>
