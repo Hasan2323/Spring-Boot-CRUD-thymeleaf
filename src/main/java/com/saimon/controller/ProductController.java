@@ -2,10 +2,7 @@ package com.saimon.controller;
 
 import com.lowagie.text.DocumentException;
 import com.saimon.entity.ProductEntity;
-import com.saimon.service.PDFExporter;
-import com.saimon.service.PdfHelperService;
-import com.saimon.service.PdfService;
-import com.saimon.service.ProductService;
+import com.saimon.service.*;
 import com.saimon.utils.NumberToSpelling;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +46,9 @@ public class ProductController {
 
     @Autowired
     private PdfService pdfService;
+
+    @Autowired
+    private DownloadService downloadService;
 
     /*
     the below method for Error/Exception handling // tutorial a eta chilo.
@@ -153,21 +153,7 @@ public class ProductController {
         nameValueMap.put("productEntity", product);
 
         pdfService.generateHtmlToPdf(nameValueMap, inputTemplateName, fullPath);
-
-        log.info("downloading file with directory {} fileName {}", fileLocation, fileName);
-        File file = new File(fullPath);
-        Path path = Paths.get(file.getAbsolutePath());
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentLength(file.length())
-                .contentType(MediaType.parseMediaType("application/octet-stream"))
-                .body(resource);
-
+        return downloadService.downloadFile(fileLocation, fileName);
     }
 
     private void setRefundAmount(BigDecimal grandTotal, Map<String, Object> nameValueMap) {
