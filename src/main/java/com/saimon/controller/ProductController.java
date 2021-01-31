@@ -1,35 +1,24 @@
 package com.saimon.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowagie.text.DocumentException;
 import com.saimon.entity.ProductEntity;
 import com.saimon.service.*;
 import com.saimon.utils.NumberToSpelling;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.DateFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -49,6 +38,9 @@ public class ProductController {
 
     @Autowired
     private DownloadService downloadService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /*
     the below method for Error/Exception handling // tutorial a eta chilo.
@@ -161,6 +153,38 @@ public class ProductController {
         nameValueMap.put("grandTotal", grandTotalString);
         nameValueMap.put("grandTotalWord", NumberToSpelling
                 .generateBalanceInWord(grandTotalString.replaceAll(",", "")));
+    }
+
+
+    @GetMapping("/products/topdf")
+    public ResponseEntity<Resource> generatePDF() throws IOException {
+
+        String fileLocation = pdfHelperService.getFileLocation();
+        List<List<String>> listOfFileDetails = new ArrayList<>();
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String fileName = "Products_data_" + currentDateTime + ".pdf";
+
+        String fullPath = fileLocation + fileName;
+
+        String[] headers = {"ID", "Product Name", "Brand", "Made In", "Price"};
+        String[] keys = {"id", "name", "brand", "madeIn", "price"};
+
+        List<ProductEntity> productEntities = productService.getAllProducts();
+        double grandTotal = productEntities.stream().mapToDouble(ProductEntity::getPrice).sum();
+        productEntities.forEach(product -> {
+            List<String> list = new ArrayList<>();
+            Map convertValue = objectMapper.convertValue(product, Map.class);
+            for (String key : keys) {
+                list.add(String.valueOf(convertValue.get(key)));
+            }
+            listOfFileDetails.add(list);
+        });
+
+        pdfService.generatePdf(grandTotal, "Product List", headers, new float[]{4, 4, 4, 4, 4}, listOfFileDetails, fullPath);
+
+        return downloadService.downloadFile(fileLocation, fileName);
     }
 
 
