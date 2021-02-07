@@ -16,4 +16,6 @@ public interface PdfService {
     boolean generatePdf(double grandTotal, String attachment, String[] columns,
                         float[] columnWidths, List<List<String>> listOfFileDetails, String fullPath);
 
+    boolean generatePdfUsingPdfBox(List<String> values, String fullPath);
+
 }

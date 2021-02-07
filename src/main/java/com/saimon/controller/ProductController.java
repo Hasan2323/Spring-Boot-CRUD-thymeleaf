@@ -112,7 +112,7 @@ public class ProductController {
         String currentDateTime = dateFormatter.format(new Date());
 
         String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=Products_" + currentDateTime + ".pdf";
+        String headerValue = "attachment; filename=OpenPdf_" + currentDateTime + ".pdf";
         response.setHeader(headerKey, headerValue);
 
         List<ProductEntity> productEntities = productService.getAllProducts();
@@ -127,7 +127,7 @@ public class ProductController {
 
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-        String fileName = "Products_report_" + currentDateTime + ".pdf";
+        String fileName = "iTextPdf_HtmlToPdf_" + currentDateTime + ".pdf";
 
         String fullPath = fileLocation + fileName;
 
@@ -164,7 +164,7 @@ public class ProductController {
 
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String currentDateTime = dateFormatter.format(new Date());
-        String fileName = "Products_data_" + currentDateTime + ".pdf";
+        String fileName = "iTextPdf_" + currentDateTime + ".pdf";
 
         String fullPath = fileLocation + fileName;
 
@@ -184,6 +184,25 @@ public class ProductController {
 
         pdfService.generatePdf(grandTotal, "Product List", headers, new float[]{4, 4, 4, 4, 4}, listOfFileDetails, fullPath);
 
+        return downloadService.downloadFile(fileLocation, fileName);
+    }
+
+    @GetMapping("/products/pdfbox")
+    public ResponseEntity<Resource> generatePdfUsingPdfBox() throws IOException {
+
+        String fileLocation = pdfHelperService.getFileLocation();
+
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+        String fileName = "PdfBox_" + currentDateTime + ".pdf";
+
+        String fullPath = fileLocation + fileName;
+
+        List<String> pdfData = new ArrayList<>();
+        pdfData.add("Hello World PDF created using PDFBox");
+        pdfData.add("While adding this line font and color settings are changed.");
+
+        pdfService.generatePdfUsingPdfBox(pdfData, fullPath);
         return downloadService.downloadFile(fileLocation, fileName);
     }
 
