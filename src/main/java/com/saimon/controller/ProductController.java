@@ -37,6 +37,9 @@ public class ProductController {
     private PdfService pdfService;
 
     @Autowired
+    private PdfServiceTwo pdfServiceTwo;
+
+    @Autowired
     private DownloadService downloadService;
 
     @Autowired
@@ -105,7 +108,7 @@ public class ProductController {
 //    }
 
     // https://www.codejava.net/frameworks/spring-boot/pdf-export-example
-    @GetMapping("/products/export/pdf")
+    @GetMapping("/products/openPdf/pdf")
     public void exportToPDF(HttpServletResponse response) throws DocumentException, IOException {
         response.setContentType("application/pdf");
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -120,7 +123,7 @@ public class ProductController {
         pdfExporter.export(response, productEntities);
     }
 
-    @GetMapping("/products/htmltopdf")
+    @GetMapping("/products/itext/htmlToPdf")
     public ResponseEntity<Resource> htmlToPDF() throws IOException {
 
         String fileLocation = pdfHelperService.getFileLocation();
@@ -156,7 +159,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/products/topdf")
+    @GetMapping("/products/itext/pdf")
     public ResponseEntity<Resource> generatePDF() throws IOException {
 
         String fileLocation = pdfHelperService.getFileLocation();
@@ -202,9 +205,33 @@ public class ProductController {
         pdfData.add("Hello World PDF created using PDFBox");
         pdfData.add("While adding this line font and color settings are changed.");
 
-        pdfService.generatePdfUsingPdfBox(pdfData, fullPath);
+        pdfServiceTwo.generatePdfUsingPdfBox(pdfData, fullPath);
         return downloadService.downloadFile(fileLocation, fileName);
     }
 
+
+    /*
+    https://knpcode.com/java-programs/convert-html-to-pdf-in-java-using-openhtmltopdf-pdfbox/
+    https://www.programmersought.com/article/2691863544/
+    https://github.com/danfickle/openhtmltopdf/wiki/Integration-Guide
+    https://stackoverflow.com/questions/58008121/how-to-download-pdf-using-openhtmltopdf-library-in-java
+    Example : https://github.com/danfickle/pretty-resume
+    */
+    @GetMapping("/products/pdfbox/htmlToPdf")
+    public ResponseEntity<Resource> downloadHtmlToPdf() throws IOException {
+
+        String fileName = "PdfBox_HtmlToPdf.pdf";
+        String fileLocation = pdfHelperService.getFileLocation();
+
+        String inputTemplateName = "/pdfbox_template";
+
+        Map<String, Object> nameValueMap = new HashMap<>();
+        nameValueMap.put("title", "Personal Retail Account");
+        nameValueMap.put("pin", "DonaldTrump420");
+        nameValueMap.put("address", "Halishahar-4216, Chittagong");
+
+        pdfServiceTwo.generateHtmlToPdf(nameValueMap, inputTemplateName, fileLocation + fileName);
+        return downloadService.downloadFile(fileLocation, fileName);
+    }
 
 }
