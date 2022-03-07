@@ -5,11 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style type="text/css">
+
+        @font-face {
+            font-family: 'Kalpurush';
+            src: url("src/main/resources/fonts/Kalpurush.ttf");
+            font-style: normal;
+        }
+
         body {
             padding: 30px 0;
             margin: 0;
             font-size: 14px;
-            font-family: arial, sans-serif;
+            font-family: 'Kalpurush', arial, sans-serif !important;
         }
 
         table {
@@ -79,6 +86,7 @@
     <div class="bank-info">
         <p>
             <span class="block"> <b>The Manager</b></span>
+            <span class="block"> <b>মুহাম্মদ আবিদ হাসান</b></span>
             <span class="block" th:text="${bankName}"></span>
             <span class="block" th:text="*{brand}"> Branch</span>
             <span class="block" th:each="address: ${branchAddress}" th:text="${address}"></span>

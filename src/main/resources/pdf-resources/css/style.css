@@ -1,3 +1,148 @@
-.title {
-    color: gray;
+@font-face {
+    font-family: 'Ekushey Azad', Arial, sans-serif !important;
+    src: url("fonts/Azad_27-02-2006.ttf");
+    font-style: normal;
+    unicode-range: U+0980-09FF;
+}
+
+
+html, body, p {
+    padding: 0;
+    margin: 0;
+    font-size: 12pt;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Ekushey Azad', Arial, sans-serif !important;
+}
+
+@media print {
+    body {
+        background: white;
+        width: 21cm;
+        height: 29.7cm;
+        margin: 30mm 45mm 30mm 45mm;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+
+.portions {
+    height: 9.9cm;
+    margin: 75px 170px;
+}
+
+
+.first-portion {
+    border-top: 20px solid #E01D6F;
+    border-bottom: 20px solid #E01D6F;
+}
+
+.first-portion {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+
+hr {
+    border-top: 2px dashed #ccc;
+    padding: 0;
+    margin: 0;
+}
+
+code {
+    font-family: monospace;
+}
+
+.first-portion-inner {
+    padding: 40px 110px;
+}
+
+/* .first-portion-inner p{
+    color: #707070;
+} */
+
+.envelope-date,
+.envelope-greet,
+.envelope-msg,
+.envelope-regards,
+.envelope-note {
+    margin-bottom: 20px;
+    color: #707070;
+}
+
+.envelope-regards {
+    margin-bottom: 0;
+}
+
+.envelope-date,
+.envelope-note span {
+    display: inline-block;
+    border-bottom: 1px solid #707070;
+}
+
+.envelope-greet span,
+.envelope-company {
+    color: #E01D6F;
+}
+
+.envelope-msg code.pin:before,
+.envelope-msg code.pin:after {
+    content: "";
+    display: inline-block;
+    background: #a7a7a7;
+    width: 40px;
+    height: 14pt;
+}
+
+.envelope-msg code.pin:before {
+    margin-right: 5px;
+}
+
+.envelope-msg code.pin:after {
+    margin-left: 5px;
+}
+
+
+.envelope-recipient {
+    border: 1px solid #E01D6F;
+    border-radius: 25px;
+    width: 530px;
+    height: 200px;
+    vertical-align: middle;
+}
+
+
+.second-portion-inner {
+    padding-top: 37.5px;
+    display: inline-block;
+}
+
+.envelope-recipient {
+    padding: 65px 110px 15px;
+}
+
+.envelope-recipient p {
+    line-height: 1.4;
+}
+
+.recipient-to {
+    margin-bottom: 20px;
+}
+
+.recipient-phone {
+    margin-top: 20px;
+}
+
+.third-portion {
+    position: relative;
+}
+
+.third-portion-inner img {
+    display: block;
+    margin: 0 auto;
+    max-width: 180px;
+    padding-top: 137.5px;
 }

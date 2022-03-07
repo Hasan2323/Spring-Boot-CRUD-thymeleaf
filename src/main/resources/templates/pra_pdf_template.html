@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xml:lang="" lang="">
+<head>
+  <title>PRA</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<!--  <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />-->
+<!--    <link href="https://fonts.maateen.me/kalpurush/font.css" rel="stylesheet">-->
+
+  <style type="text/css">
+      /*@import url('https://fonts.maateen.me/kalpurush/font.css');*/
+      @font-face {
+          font-family: 'Kalpurush';
+          src: url("pdf-resources/fonts/Kalpurush.ttf");
+          font-style: normal;
+          unicode-range: U+0980-09FF;
+      }
+
+
+      html, body, p {
+          padding: 0;
+          margin: 0;
+          font-size: 12pt;
+          margin-left: auto;
+          margin-right: auto;
+          font-family: 'Kalpurush', Arial, sans-serif !important;
+      }
+
+      @media print {
+          body {
+              background: white;
+              width: 21cm;
+              height: 29.7cm;
+              margin: 30mm 45mm 30mm 45mm;
+              margin-left: auto;
+              margin-right: auto;
+          }
+      }
+
+
+      .portions {
+          height: 9.9cm;
+          margin: 75px 170px;
+      }
+
+
+      .first-portion {
+          border-top: 20px solid #E01D6F;
+          border-bottom: 20px solid #E01D6F;
+      }
+
+      .first-portion {
+          transform: rotate(180deg);
+          -webkit-transform: rotate(180deg);
+          -moz-transform: rotate(180deg);
+          -ms-transform: rotate(180deg);
+          -o-transform: rotate(180deg);
+      }
+
+      hr {
+          border-top: 2px dashed #ccc;
+          padding: 0;
+          margin: 0;
+      }
+
+      code {
+          font-family: monospace;
+      }
+
+      .first-portion-inner {
+          padding: 40px 110px;
+      }
+
+      /* .first-portion-inner p{
+          color: #707070;
+      } */
+
+      .envelope-date,
+      .envelope-greet,
+      .envelope-msg,
+      .envelope-regards,
+      .envelope-note {
+          margin-bottom: 20px;
+          color: #707070;
+      }
+
+      .envelope-regards {
+          margin-bottom: 0;
+      }
+
+      .envelope-date,
+      .envelope-note span {
+          display: inline-block;
+          border-bottom: 1px solid #707070;
+      }
+
+      .envelope-greet span,
+      .envelope-company {
+          color: #E01D6F;
+      }
+
+      .envelope-msg code.pin:before,
+      .envelope-msg code.pin:after {
+          content: "";
+          display: inline-block;
+          background: #a7a7a7;
+          width: 40px;
+          height: 14pt;
+      }
+
+      .envelope-msg code.pin:before {
+          margin-right: 5px;
+      }
+
+      .envelope-msg code.pin:after {
+          margin-left: 5px;
+      }
+
+
+      .envelope-recipient {
+          border: 1px solid #E01D6F;
+          border-radius: 25px;
+          width: 530px;
+          height: 200px;
+          vertical-align: middle;
+      }
+
+
+      .second-portion-inner {
+          padding-top: 37.5px;
+          display: inline-block;
+      }
+
+      .envelope-recipient {
+          padding: 65px 110px 15px;
+      }
+
+      .envelope-recipient p {
+          line-height: 1.4;
+      }
+
+      .recipient-to {
+          margin-bottom: 20px;
+      }
+
+      .recipient-phone {
+          margin-top: 20px;
+      }
+
+      .third-portion {
+          position: relative;
+      }
+
+      .third-portion-inner img {
+          display: block;
+          margin: 0 auto;
+          max-width: 180px;
+          padding-top: 137.5px;
+      }
+  </style>
+</head>
+<body>
+    <div class="main">
+        <div class="portions first-portion">
+            <div class="first-portion-inner">
+                <p class="envelope-date" th:text="${'Date: ' + banglaDate}">তারিখঃ ৪ ঠা এপ্রিল, ২০২১</p>
+
+                <p class="envelope-greet">প্রিয় <span><b th:text="${banglaName}">মুহাম্মদ আবিদ হাসা</b></span>,</p>
+                <p class="envelope-msg">অভিনন্দন! বিকাশ রিটেল একাউন্ট রেজিস্ট্রেশনের জন্য প্রযোজ্য ভেরিফিকেশন কোডটি আপনার প্রদত্ত ব্যবসা প্রতিষ্ঠানের ঠিকানায় আপনি সফলভাবে গ্রহণ করেছেন।
+                    আপনার ভেরিফিকেশান কোডটি হল, <code class="pin"><b th:text="${verCode}">keokradong2021</b></code> কোডটি <code>www.bkash.com/pra/verification</code> -এ প্রবেশ করিয়ে ভেরিফাই করে রেজিস্ট্রেশন প্রক্রিয়া সম্পন্ন করুন।</p>
+                <p class="envelope-note"><span>সতর্কতাঃ</span> ভেরিফিকেশন কোডটি কারো সাথে শেয়ার করবেন না এবং ভেরিফিকেশন সফলভাবে সম্পন্ন হয়ে গেলে কোডটি নষ্ট করে ফেলুন।</p>
+                <p class="envelope-regards">ধন্যবাদান্তে,</p> 
+                <p class="envelope-company"><b>বিকাশ লিমিটেড</b></p>
+
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="portions second-portion">
+            <div class="second-portion-inner">
+                <div class="envelope-recipient">
+                    <p class="recipient-to">To,</p>
+                    <p><b th:text="${name}">Saimon Uddin</b></p>
+                    <p th:text="${address}">House 26, ROad 11, Sector 6</p>
+                    <p>Uttara Dhaka</p>
+                    <p class="recipient-phone">Mobile: <span th:text="${phone}">+8801714175196</span></p>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+
+        <div class="portions third-portion">
+            <div class="third-portion-inner">
+                <img th:src="@{images/logo-lg.png}" alt="bKash Logo" />
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

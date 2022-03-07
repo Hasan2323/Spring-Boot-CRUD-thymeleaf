@@ -1,6 +1,7 @@
 package com.saimon.service.impl;
 
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.io.font.PdfEncodings;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
@@ -61,24 +62,30 @@ public class PdfServiceImpl implements PdfService {
     public boolean generateHtmlToPdf(Map<String, Object> nameValueMap, String inputTemplateFile, String fullPath) {
         try (FileOutputStream outputStream = new FileOutputStream(fullPath)) {
             log.info("generating pdf file from html template");
-            HtmlConverter.convertToPdf(getHtml(inputTemplateFile, nameValueMap), outputStream);
+            String html = getHtml(inputTemplateFile, nameValueMap);
+            //HtmlConverter.convertToPdf(getHtml(inputTemplateFile, nameValueMap), outputStream);
+            PdfWriter pdfWriter = new PdfWriter(outputStream);
+            Document document = HtmlConverter.convertToDocument(html, pdfWriter);
+            PdfFont font = PdfFontFactory.createFont("src/main/resources/fonts/Kalpurush.ttf");
+            document.setFont(font);
+            //document.setFontFamily("Kalpurush", "arial", "sans-serif");
+            document.close();
             log.info("Pdf file generation successful {}", fullPath);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("Pdf file generation error {}", e.getMessage());
+            log.error("Pdf file generation error {}", e.getMessage(), e);
             return false;
         }
     }
 
     private String getHtml(@NotNull String inputTemplate, Map<String, Object> map) {
         log.info("Generating html content from inputTemplate {}, values {}", inputTemplate, map.size());
-        Context ctx = new Context(Locale.ENGLISH, map);
+        Context ctx = new Context();
 //        OR
 //        Context ctx = new Context(Locale.ENGLISH);
-//        ctx.setVariables(map);
+        ctx.setVariables(map);
         String html = templateEngine.process(inputTemplate, ctx);
-        log.info("Generated html content from inputTemplate {}, values {}", inputTemplate, map.size());
+        log.info("Generated html content from inputTemplate {}, values {} {}", inputTemplate, map.size(), html);
         return html;
     }
 
@@ -115,8 +122,9 @@ public class PdfServiceImpl implements PdfService {
 
             PdfFont bold = PdfFontFactory.createFont(StandardFonts.COURIER_BOLD);
             PdfFont font = PdfFontFactory.createFont(StandardFonts.TIMES_ROMAN);
+            PdfFont banglaFont = PdfFontFactory.createFont("src/main/resources/fonts/arialuni.ttf", PdfEncodings.IDENTITY_H);
 
-            doc.add(new Paragraph(attachment).setFont(bold).setFontSize(FONT_SIZE_15));
+            doc.add(new Paragraph(attachment).setFont(banglaFont).setFontSize(FONT_SIZE_15));
 
             Table table = new Table(UnitValue.createPercentArray(columnWidths), true);
 

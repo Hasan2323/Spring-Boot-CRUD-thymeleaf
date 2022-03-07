@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<renderers>
+    <renderer mime="application/pdf">
+        <fonts>
+            <font kerning="yes" embed-url="src/main/resources/templates/Kalpurush.ttf" embedding-mode="subset">
+                <font-triplet name="Kalpurush" style="normal" weight="normal"/>
+            </font>
+        </fonts>
+    </renderer>
+</renderers>
+

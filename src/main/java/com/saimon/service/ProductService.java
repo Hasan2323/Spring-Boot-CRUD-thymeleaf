@@ -2,6 +2,7 @@ package com.saimon.service;
 
 import com.saimon.entity.ProductEntity;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 public interface ProductService {
@@ -14,4 +15,5 @@ public interface ProductService {
 
     void deleteProduct(Long id);
 
+    HttpResponse<String> getDataViaAPI(String url);
 }
